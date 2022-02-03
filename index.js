@@ -16,9 +16,13 @@ app.use(express.static('uploads'));
 // ========== Database ===========
 const db = require('./models');
 
-// ========== Router ==============
+// ========== Router For FullForm  ==============
 const fullFormRoutes = require('./routes/fullFormRoutes');
 app.use('/', fullFormRoutes);
+
+// ========== Router For CKEditor page  ==============
+const ckEditorRoutes = require('./routes/ckEditorRoutes');
+app.use('/ckeditor', ckEditorRoutes);
 
 // == When Sequelize database connected, then app listening port start ==
 db.sequelize
