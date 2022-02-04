@@ -47,4 +47,59 @@ router.post('/uploads', async (req, res) => {
 	}
 });
 
+// For CkEditor Page Data Delete
+router.post('/delete', async (req, res) => {
+	const deleteId = req.body.deleteId;
+	// For delete data in MySql
+	await ckEditorDataPost.destroy({
+		where: {
+			id: deleteId,
+		},
+	});
+
+	res.json('Deleted Successfully!');
+});
+
+// For Update CKEditor Page Files in uploads
+router.put('/update/files', async (req, res) => {
+	/**
+	 * why use "try catch"?
+	 * if somehow file does't move in any case
+	 * that will not harm server (like: serverDown or serverStop)
+	 */
+	try {
+		if (!req.files) {
+			res.json({
+				status: false,
+				message: 'No files Found',
+			});
+		} else {
+			const { image } = req.files;
+
+			// file will be save in uploads folder
+			await image.mv('./uploads/' + image.name);
+
+			res.json({
+				status: true,
+				message: 'File is uploaded',
+			});
+		}
+	} catch (err) {
+		res.status(500).json(err);
+	}
+});
+
+// For Update CKEditor Page Data in Database
+router.put('/update', async (req, res) => {
+	const updateData = req.body;
+	const record = await ckEditorDataPost.findOne({
+		where: {
+			id: updateData.id,
+		},
+	});
+	await record.update(updateData);
+
+	res.json('Update Data Successfully!');
+});
+
 module.exports = router;
