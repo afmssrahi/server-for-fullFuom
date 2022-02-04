@@ -48,6 +48,7 @@ router.post('/uploads', async (req, res) => {
 	}
 });
 
+// For Data Delete
 router.post('/delete', async (req, res) => {
 	const deleteId = req.body.deleteId;
 
